@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import css from './Cast.module.css';
 const API_KEY = 'dbea77d3eb5b3622b027f73f6a5032fe';
 
 export const Cast = ({ movieId }) => {
@@ -34,15 +34,15 @@ export const Cast = ({ movieId }) => {
 
   return (
     <div>
-      <ul>
+      <ul className={css.CastList}>
         {cast.map(actor => (
-          <li key={actor.id}>
+          <li key={actor.id} className={css.ActorItem}>
             <img
               src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
               alt={actor.name}
             />
             <p>{actor.name}</p>
-            <p>{actor.character}</p>
+            <p>Character: {actor.character}</p>
           </li>
         ))}
       </ul>

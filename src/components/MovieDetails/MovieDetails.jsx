@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, Outlet } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import css from './MovieDetails.module.css';
+import { Cast } from 'components/Cast/Cast';
+import { Reviews } from 'components/Reviews';
+import { useNavigate } from 'react-router-dom';
 
 const API_KEY = 'dbea77d3eb5b3622b027f73f6a5032fe';
 
 export const MovieDetails = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
-  const [showCast, setShowCast] = useState(false); // Dodatkowy stan do kontrolowania widoczności obsady
+  const [showCast, setShowCast] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
+  let navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -38,11 +43,17 @@ export const MovieDetails = () => {
 
   const handleCastClick = () => {
     setShowCast(true);
+    setShowReviews(false);
+  };
+
+  const handleReviewsClick = () => {
+    setShowReviews(true);
+    setShowCast(false);
   };
 
   return (
     <div>
-      <Link to="/movies">Back to Movies</Link>
+      <button onClick={() => navigate(-1)}>Back</button>
       <div className={css.MovieDetailsWrapper}>
         <img
           src={`https://image.tmdb.org/t/p/w500${poster_path}`}
@@ -65,11 +76,23 @@ export const MovieDetails = () => {
               Cast
             </Link>
           </li>
+          <li>
+            <Link
+              to={`/movies/${movieId}/reviews`}
+              onClick={handleReviewsClick}
+            >
+              Reviews
+            </Link>
+          </li>
         </ul>
         {showCast && (
           <div className="DivForCastDisplay">
-            <Outlet />{' '}
-            {/* Wyświetlanie komponentu Cast wewnątrz DivForCastDisplay */}
+            <Cast movieId={movieId} />{' '}
+          </div>
+        )}
+        {showReviews && (
+          <div className="DivForReviewsDisplay">
+            <Reviews movieId={movieId} />{' '}
           </div>
         )}
       </div>
