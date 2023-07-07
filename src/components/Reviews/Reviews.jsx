@@ -31,10 +31,6 @@ export const Reviews = ({ movieId }) => {
     }
   }, [movieId]);
 
-  if (!movieId) {
-    return <div>No movie ID provided.</div>;
-  }
-
   return (
     <div>
       <h3>Reviews</h3>

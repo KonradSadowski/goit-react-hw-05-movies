@@ -28,10 +28,6 @@ export const Cast = ({ movieId }) => {
     }
   }, [movieId]);
 
-  if (!movieId) {
-    return <div>No movie ID provided.</div>;
-  }
-
   return (
     <div>
       <ul className={css.CastList}>
