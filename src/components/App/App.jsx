@@ -1,11 +1,11 @@
 import { Routes, Route, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Home, Movies, NotFound } from 'Pages';
-import { MovieDetails } from 'components/MovieDetails';
-import { Cast } from 'components/Cast';
-import { Reviews } from 'components/Reviews';
-
+import { lazy, Suspense } from 'react';
 import css from './App.module.css';
+const Home = lazy(() => import('../../Pages/Home/Home'));
+const Movies = lazy(() => import('../../Pages/Movies/Movies'));
+const NotFound = lazy(() => import('../../Pages/NotFound/NotFound'));
+const MovieDetails = lazy(() => import('../MovieDetails/MovieDetails'));
 
 const StyledLink = styled(NavLink)`
   color: black;
@@ -27,13 +27,40 @@ export const App = () => {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/movies/:movieId" element={<MovieDetails />}>
-          <Route path="cast" element={<Cast />} />
-          <Route path="reviews" element={<Reviews />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <Movies />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/movies/:movieId"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <MovieDetails />
+            </Suspense>
+          }
+        >
+          {/* ... */}
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Routes>
     </div>
   );

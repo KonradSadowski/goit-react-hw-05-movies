@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import css from './MovieDetails.module.css';
-import { Cast } from 'components/Cast/Cast';
-import { Reviews } from 'components/Reviews';
 import { useNavigate } from 'react-router-dom';
+
+const Cast = lazy(() => import('../Cast/Cast'));
+const Reviews = lazy(() => import('../Reviews/Reviews'));
 
 const API_KEY = 'dbea77d3eb5b3622b027f73f6a5032fe';
 
@@ -87,12 +88,16 @@ export const MovieDetails = () => {
         </ul>
         {showCast && (
           <div className="DivForCastDisplay">
-            <Cast movieId={movieId} />{' '}
+            <Suspense fallback={<div>Loading cast...</div>}>
+              <Cast movieId={movieId} />
+            </Suspense>
           </div>
         )}
         {showReviews && (
           <div className="DivForReviewsDisplay">
-            <Reviews movieId={movieId} />{' '}
+            <Suspense fallback={<div>Loading reviews...</div>}>
+              <Reviews movieId={movieId} />
+            </Suspense>
           </div>
         )}
       </div>
